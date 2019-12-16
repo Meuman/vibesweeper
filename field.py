@@ -1,39 +1,55 @@
-import numpy
-
-
 class Field:
-    """
-    This is the field module
-    It represents the field which is filled with mines, which the player has to avoid setting off.
-    A bomb is represented by B.
-    An empty space is represented by a 0 value.
-    Any other numerical value represents how many bombs are in the neighboring squares.
-    """
     def __init__(self, columns, rows):
-        """
-        The constructor method takes 2 integers as its arguments, columns and rows.
-        It makes a two dimensional list with using the arguments to determine the size of the dimensions.
-        It fills the list with the number 0, which represent an empty space.
-        """
-        self.two_dim_field = numpy.full((columns, rows), '0')
+        self.y_limit = columns
+        self.x_limit = rows
+        self.two_dim_field = [[0 for x in range(columns)] for y in range(rows)]
 
-    def __str__(self):
-        return str(self.two_dim_field)
+    def show(self):
+        for x in range(self.y_limit):
+            for y in range(self.x_limit):
+                print(f'{self.two_dim_field[y][x]} ', end='')
+            print()
 
     def fill_with_bombs(self, *coordinates):
-        """
-        This method takes the arguments (which are tuples) that represent coordinates (x, y)
-        and fills these places with bombs (B)
-
-        """
         for coordinate in coordinates:
-            y = coordinate[0]-1  # arrays and lists start from 0 so subtract one
-            x = coordinate[1]-1  # same here
-            self.two_dim_field[x][y] = 'B'
-            # now we have to change the values of the neighboring squares if they are an int,
-
+            x = coordinate[0]-1  # arrays and lists start from 0 so subtract one
+            y = coordinate[1]-1  # same here
+            self.two_dim_field[x][y] = 9
+            # now we have to change the values of the neighboring squares if they aren't a mine
+            if (y > 0):  # case                             top
+                a = self.two_dim_field[x][y-1]
+                if a != 9:
+                    self.two_dim_field[x][y-1] += 1
+            if (y < self.y_limit - 1):  # case              down
+                a = self.two_dim_field[x][y+1]
+                if a != 9:
+                    self.two_dim_field[x][y+1] += 1
+            if (x > 0):  # case                             left
+                a = self.two_dim_field[x-1][y]
+                if a != 9:
+                    self.two_dim_field[x-1][y] += 1
+            if (x < self.x_limit - 1):  # case               right
+                a = self.two_dim_field[x+1][y]
+                if a != 9:
+                    self.two_dim_field[x+1][y] += 1
+            if (y > 0 and x > 0):  # case                     top left
+                a = self.two_dim_field[x-1][y-1]
+                if a != 9:
+                    self.two_dim_field[x-1][y-1] += 1
+            if (y > 0 and x < self.x_limit - 1):  # case     top right
+                a = self.two_dim_field[x+1][y-1]
+                if a != 9:
+                    self.two_dim_field[x+1][y-1] += 1
+            if (y < self.y_limit - 1 and x > 0):  # case     bot left
+                a = self.two_dim_field[x-1][y+1]
+                if a != 9:
+                    self.two_dim_field[x-1][y+1] += 1
+            if (y < self.y_limit - 1 and x < self.x_limit - 1):
+                a = self.two_dim_field[x+1][y+1]
+                if a != 9:
+                    self.two_dim_field[x+1][y+1] += 1
 
 
 field = Field(5, 5)
-field.fill_with_bombs((2, 5), (2, 4), (3, 2), (1, 1))
-print(field)
+field.fill_with_bombs((2, 4), (3, 4))
+print(field.show())
