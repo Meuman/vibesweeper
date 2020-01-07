@@ -25,6 +25,5 @@ class Field:
                     this_tile_value = self.two_dim_field[coords[0]][coords[1]].get_value()
                     if this_tile_value != 9 and (0 <= coords[0] <= self.x_limit-1) and (0 <= coords[1] <= self.y_limit-1):
                         self.two_dim_field[coords[0]][coords[1]] += 1
-                except Exception:  # not really sure how the fuck should i handle this exception or should i even handle it at all
-                    pass  # this try is really just here because the interpreter shits itself if it sees an index out of range
-                # also it's way easier to use try/except instead of writing a shitton of if statements (this comment was made by ask for forgiveness, not permission gang)
+                except Exception:
+                    pass
