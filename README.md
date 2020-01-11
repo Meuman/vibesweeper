@@ -1,3 +1,3 @@
 # minesweeper
 ## pipr projekt
-### Special thanks to subduedhues for the vibe check emoji art instagram.com/subduedhues/
+### Special thanks to instagram.com/subduedhues/ for the vibe check emoji art.
