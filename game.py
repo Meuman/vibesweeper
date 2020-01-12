@@ -48,20 +48,25 @@ class Game:
 
     def draw_tiles(self):
         field = self.field.two_dim_field
+        flag = pg.image.load('C:\\Users\\derpi\\Documents\\GitHub\\minesweeper\\flag.png')
+        flag = pg.transform.smoothscale(flag, (self.RECT_SIZE, self.RECT_SIZE))
         for rows in range(self.field.y_limit):
             for columns in range(self.field.x_limit):
-                rect_to_draw = pg.Rect(columns*(self.RECT_SIZE), self.RECT_SIZE + rows*(self.RECT_SIZE), self.RECT_SIZE, self.RECT_SIZE)
+                rect_to_draw = pg.Rect(columns*(self.RECT_SIZE), self.RECT_SIZE + rows*(self.RECT_SIZE), self.RECT_SIZE, self.RECT_SIZE)  # create the rect to draw
                 tile_value = field[columns][rows].get_value()
                 value_to_draw = self.font.render(str(tile_value), True, self.color_dict[tile_value])
                 if field[columns][rows].state == 'H':  # render hidden tile
                     pg.draw.rect(self.DISPLAY, (175, 175, 175), rect_to_draw)
-                if field[columns][rows].state == 'R':  # render revealed tile
+                elif field[columns][rows].state == 'F':
+                    pg.draw.rect(self.DISPLAY, (175, 175, 175), rect_to_draw)
+                    self.DISPLAY.blit(flag, (columns*self.RECT_SIZE, int(self.RECT_SIZE) + rows*self.RECT_SIZE))
+                elif field[columns][rows].state == 'R':  # render revealed tile
                     pg.draw.rect(self.DISPLAY, (125, 125, 125), rect_to_draw)
                     if tile_value != 0 and tile_value != 9:
                         self.DISPLAY.blit(value_to_draw, (columns*self.RECT_SIZE + self.RECT_SIZE//3.05, int(self.RECT_SIZE*1.2) + rows*self.RECT_SIZE))
                     if tile_value == 9:
                         self.DISPLAY.blit(self.vibe_man, (columns*self.RECT_SIZE, int(self.RECT_SIZE) + rows*self.RECT_SIZE))
-                pg.draw.rect(self.DISPLAY, (75, 75, 75), rect_to_draw, 1)
+                pg.draw.rect(self.DISPLAY, (75, 75, 75), rect_to_draw, 1)  # draw the border around the rectangle
 
     def click_tile(self, x, y):
         if x < 0 or y < 0:  # if the given x and y are not correct do nothing
