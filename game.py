@@ -46,16 +46,6 @@ class Game:
         self.vibe_man = pg.transform.smoothscale(self.vibe_man, (self.RECT_SIZE, self.RECT_SIZE))
         self.DISPLAY.blit(self.vibe_man, (self.display_width//2 - self.RECT_SIZE//2, 0))
 
-    # def draw_borders(self):
-    #     horizontal_range = self.field.y_limit
-    #     vertical_range = self.field.x_limit
-    #     for horizontal_iterator in range(horizontal_range):
-    #         horizontal_rect = pg.Rect(0, (horizontal_iterator+1)*self.RECT_SIZE, self.display_width, 1)
-    #         pg.draw.rect(self.DISPLAY, (0, 0, 0), horizontal_rect)
-    #     for vertical_iterator in range(vertical_range):
-    #         vertical_rect = pg.Rect((vertical_iterator+1)*self.RECT_SIZE, 0, 1, self.display_height)
-    #         pg.draw.rect(self.DISPLAY, (0, 0, 0), vertical_rect)
-
     def draw_tiles(self):
         field = self.field.two_dim_field
         for rows in range(self.field.y_limit):
@@ -63,7 +53,7 @@ class Game:
                 rect_to_draw = pg.Rect(columns*(self.RECT_SIZE), self.RECT_SIZE + rows*(self.RECT_SIZE), self.RECT_SIZE, self.RECT_SIZE)
                 tile_value = field[columns][rows].get_value()
                 value_to_draw = self.font.render(str(tile_value), True, self.color_dict[tile_value])
-                if field[columns][rows].state == 'H':  #  render hidden tile
+                if field[columns][rows].state == 'H':  # render hidden tile
                     pg.draw.rect(self.DISPLAY, (175, 175, 175), rect_to_draw)
                 if field[columns][rows].state == 'R':  # render revealed tile
                     pg.draw.rect(self.DISPLAY, (125, 125, 125), rect_to_draw)
@@ -119,14 +109,8 @@ class Game:
         }
 
 
-field = f.Field(5, 5)
-field.place_bombs((1, 1), (2, 2), (3, 4), (4, 4), (2, 1))
-field.show()
-game = Game(field)
-game.field.show()
-
 # field = f.Field(5, 5)
+# field.place_bombs((1, 1), (2, 2), (3, 4), (4, 4), (2, 1))
+# field.show()
 # game = Game(field)
-# game.field.place_bombs((1, 1), (3, 3))
-# game.click_tile(2, 2)
 # game.field.show()
