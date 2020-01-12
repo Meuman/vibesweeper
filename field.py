@@ -16,8 +16,8 @@ class Field:
 
     def place_bombs(self, *coordinates):
         for coordinate in coordinates:
-            x = coordinate[0]-1  # indexes start from 0, so we have to subtract 1
-            y = coordinate[1]-1
+            x = coordinate[0]
+            y = coordinate[1]
             self.two_dim_field[x][y].set_value(9)
             neighbor_coords = get_neighbor_coords(x, y)
             for coords in neighbor_coords.values():

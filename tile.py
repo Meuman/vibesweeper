@@ -5,7 +5,7 @@ class Tile:
     def __init__(self, value, state, x=0, y=0):
         self._value = value
         self.state = state  # R - revealed, F - flag, H - hidden
-        self.square = pg.Rect(x, y, 75, 75)
+        self.square = pg.Rect(x, y, 60, 60)
 
     def __add__(self, num):
         self._value += num
