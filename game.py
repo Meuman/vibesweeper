@@ -18,18 +18,19 @@ class Game:
         self.init_menu()
         self.draw_tiles()
         # self.draw_borders()
-        pg.display.update()
         while self.result is None:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.result = False
                 mouse_pos = self.get_mouse_coords()
-                print(mouse_pos)
                 click_state = pg.mouse.get_pressed()
                 if click_state[0]:
                     self.click_tile(mouse_pos[0], mouse_pos[1])
-                if click_state[1]:
-                    self.field.two_dim_field[mouse_pos[0]][mouse_pos[1]].flag()
+                if click_state[2]:
+                    if self.field.two_dim_field[mouse_pos[0]][mouse_pos[1]].state == 'H':
+                        self.field.two_dim_field[mouse_pos[0]][mouse_pos[1]].flag()
+                    elif self.field.two_dim_field[mouse_pos[0]][mouse_pos[1]].state == 'F':
+                        self.field.two_dim_field[mouse_pos[0]][mouse_pos[1]].state = 'H'
                 self.draw_tiles()
                 pg.display.update()
 
@@ -62,9 +63,9 @@ class Game:
                 rect_to_draw = pg.Rect(columns*(self.RECT_SIZE), self.RECT_SIZE + rows*(self.RECT_SIZE), self.RECT_SIZE, self.RECT_SIZE)
                 tile_value = field[columns][rows].get_value()
                 value_to_draw = self.font.render(str(tile_value), True, self.color_dict[tile_value])
-                if field[columns][rows].state == 'H':
+                if field[columns][rows].state == 'H':  #  render hidden tile
                     pg.draw.rect(self.DISPLAY, (175, 175, 175), rect_to_draw)
-                if field[columns][rows].state == 'R':
+                if field[columns][rows].state == 'R':  # render revealed tile
                     pg.draw.rect(self.DISPLAY, (125, 125, 125), rect_to_draw)
                     if tile_value != 0 and tile_value != 9:
                         self.DISPLAY.blit(value_to_draw, (columns*self.RECT_SIZE + self.RECT_SIZE//3.05, int(self.RECT_SIZE*1.2) + rows*self.RECT_SIZE))
@@ -76,13 +77,13 @@ class Game:
         if x < 0 or y < 0:  # if the given x and y are not correct do nothing
             return
         try:
-            if self.field.two_dim_field[x][y].state == 'F':  # if the clicked tile is flagged do nothing
+            if self.field.two_dim_field[x][y].state == 'F' or self.field.two_dim_field[x][y].state == 'R':  # if the clicked tile is flagged or revealed do nothing
                 return
-            self.field.two_dim_field[x][y].reveal()
+            self.field.two_dim_field[x][y].reveal()  # reveal the clicked tile
             if self.field.two_dim_field[x][y].get_value() == 9:  # if the clicked tile is a bomb lose the game
                 self.result = False
                 return
-            if self.field.two_dim_field[x][y].get_value() == 0:  # if the clicked tile has a value equal to 0 reveal it and the surrounding ones
+            elif self.field.two_dim_field[x][y].get_value() == 0:  # if the clicked tile has a value equal to 0 reveal it and the surrounding ones
                 self.reveal_surrounding_tiles(x, y)
         except Exception:
             return
@@ -92,13 +93,10 @@ class Game:
         for coords in neighbor_coords.values():
             try:
                 processed_tile = self.field.two_dim_field[coords[0]][coords[1]]
-                if processed_tile == 'H':
-                    if processed_tile.get_value() != 9:
-                        processed_tile.reveal()
-                        if processed_tile.get_value() == 0:
-                            self.reveal_surrounding_tiles(coords[0], coords[1])
+                if processed_tile.state == 'H' and processed_tile.get_value() != 9:
+                    self.click_tile(coords[0], coords[1])
             except Exception:
-                return
+                pass
 
     def get_mouse_coords(self):
         position = pg.mouse.get_pos()
@@ -119,21 +117,6 @@ class Game:
             8: (102, 0, 102),
             9: (255, 255, 255)
         }
-
-    # def reveal_surrounding_tiles(self, x, y):
-    #     x -= 1
-    #     y -= 1
-    #     neighbor_coords = get_neighbor_coords(x, y)
-    #     for coords in neighbor_coords.values():
-    #         try:
-    #             processed_tile = self.field.two_dim_field[coords[0]][coords[1]]
-    #             if processed_tile.state == 'H':
-    #                 if processed_tile.get_value() != 9:
-    #                     processed_tile.reveal()
-    #                 if processed_tile.get_value() == 0:
-    #                     self.reveal_surrounding_tiles(coords[0], coords[1])
-    #         except Exception:
-    #             pass
 
 
 field = f.Field(5, 5)
