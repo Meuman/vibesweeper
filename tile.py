@@ -26,6 +26,8 @@ class Tile:
     def show(self):
         if self.state == 'R':
             return self._value
+        else:
+            return self.state
 
     def set_value(self, value):
         self._value = value
