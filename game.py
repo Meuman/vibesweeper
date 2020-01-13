@@ -1,10 +1,11 @@
 import field as f
 from coords import get_neighbor_coords
 import pygame as pg
+from ranfieldgen import generate_random_field
 
 
 class Game:
-    def __init__(self, field=f.Field(5, 5)):
+    def __init__(self, field=generate_random_field(8, 8, 10)):
         pg.init()
         icon = pg.image.load('C:\\Users\\derpi\\Documents\\GitHub\\minesweeper\\ico.png')
         pg.display.set_icon(icon)
@@ -117,5 +118,5 @@ class Game:
 # field = f.Field(5, 5)
 # field.place_bombs((1, 1), (2, 2), (3, 4), (4, 4), (2, 1))
 # field.show()
-# game = Game(field)
+# game = Game()
 # game.field.show()
