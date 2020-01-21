@@ -1,11 +1,13 @@
 def get_neighbor_coords(x, y):
-    coords = dict()
-    coords['top left'] = (x-1, y-1)
-    coords['top'] = (x, y-1)
-    coords['top right'] = (x+1, y-1)
-    coords['left'] = (x-1, y)
-    coords['right'] = (x+1, y)
-    coords['bot left'] = (x-1, y+1)
-    coords['bot'] = (x, y+1)
-    coords['bot right'] = (x+1, y+1)
+    if (x < 0 or y < 0):
+        return None
+    coords = set()
+    coords.add((x-1, y-1))  # top left
+    coords.add((x, y-1))  # top
+    coords.add((x+1, y-1))  # top right
+    coords.add((x-1, y))  # left
+    coords.add((x+1, y))  # right
+    coords.add((x-1, y+1))  # bot left
+    coords.add((x, y+1))  # bot
+    coords.add((x+1, y+1))  # bot right
     return coords

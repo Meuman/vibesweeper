@@ -1,11 +1,9 @@
-import pygame as pg
-
-
 class Tile:
     def __init__(self, value, state, x=0, y=0):
         self._value = value
+        self.x = x
+        self.y = y
         self.state = state  # R - revealed, F - flag, H - hidden
-        self.square = pg.Rect(x, y, 60, 60)
 
     def __add__(self, num):
         self._value += num
@@ -23,6 +21,9 @@ class Tile:
     def flag(self):
         self.state = 'F'
 
+    def unflag(self):
+        self.state = 'H'
+
     def show(self):
         if self.state == 'R':
             return self._value
@@ -34,3 +35,12 @@ class Tile:
 
     def get_value(self):
         return self._value
+
+    def is_revealed(self):
+        return self.state == 'R'
+
+    def is_flagged(self):
+        return self.state == 'F'
+
+    def is_hidden(self):
+        return self.state == 'H'
