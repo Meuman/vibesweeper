@@ -30,6 +30,3 @@ class Field:
                         self.two_dim_field[coords[0]][coords[1]] += 1
                 except Exception:
                     pass
-
-    def copy(self):
-        return self
