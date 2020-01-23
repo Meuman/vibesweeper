@@ -3,15 +3,16 @@ from coords import get_neighbor_coords
 import pygame as pg
 from ranfieldgen import generate_random_field
 import copy as c
+import timeit
 
 
 class Game:
-    def __init__(self, field_rows=8, field_columns=8, num_of_bombs=9):
+    def __init__(self, field_rows=8, field_columns=8, num_of_bombs=5):
         pg.init()
         icon = pg.image.load('ico.png')
         pg.display.set_icon(icon)
         pg.display.set_caption("Vibesweeper")
-        self.RECT_SIZE = 60
+        self.RECT_SIZE = 100
         self.NUMBER_X_ADJUSTMENT_RATE = 3.05
         self.NUMBER_Y_ADJUSTMENT_RATE = 1.2
         self.field = f.Field(field_rows, field_columns)
@@ -24,6 +25,7 @@ class Game:
         self.init_menu()
         self.draw_tiles()
         self.revealed_tiles = 0
+        self.threebv = 'N\A'
         first_click = False
         while self.result is None:
             for event in pg.event.get():
@@ -34,21 +36,24 @@ class Game:
                 if click_state[0]:
                     if first_click is False:
                         self.field = generate_random_field(field_rows, field_columns, num_of_bombs, mouse_pos[0], mouse_pos[1])
+                        start = timeit.default_timer()
                         self.threebv = self.calculate_3bv()
-                        print(self.threebv)
                         first_click = True
                     self.click_tile(mouse_pos[0], mouse_pos[1])
                 if click_state[2]:
                     if self.field.two_dim_field[mouse_pos[0]][mouse_pos[1]].is_hidden():
                         self.field.two_dim_field[mouse_pos[0]][mouse_pos[1]].flag()
+                        self.flag_count -= 1
                     elif self.field.two_dim_field[mouse_pos[0]][mouse_pos[1]].is_flagged():
                         self.field.two_dim_field[mouse_pos[0]][mouse_pos[1]].unflag()
+                        self.flag_count += 1
                 self.draw_tiles()
-                self.clock.tick(100)
                 if (self.revealed_tiles == ((self.field.x_limit*self.field.y_limit) - self.num_of_bombs) and self.result is None):
-                    print("Victory!")
                     self.result = True
+                self.maintain_menu()
                 pg.display.update()
+        stop = timeit.default_timer()
+        self.time = int(stop-start)
         self.draw_tiles_for_ending()
         pg.display.update()
         running = True
@@ -64,13 +69,20 @@ class Game:
 
     def init_menu(self):
         menurect = pg.Rect(0, 0, self.display_width, self.RECT_SIZE)
+        self.menu_font = pg.font.SysFont(False, self.RECT_SIZE//2)
         pg.draw.rect(self.DISPLAY, (200, 200, 200), menurect)
         self.vibe_man = pg.image.load('him.png')
         self.vibe_man = pg.transform.smoothscale(self.vibe_man, (self.RECT_SIZE, self.RECT_SIZE))
         self.DISPLAY.blit(self.vibe_man, (self.display_width//2 - self.RECT_SIZE//2, 0))
         self.bomb = pg.image.load('bomb.png')
         self.bomb = pg.transform.smoothscale(self.bomb, (self.RECT_SIZE, self.RECT_SIZE))
-        self.clock = pg.time.Clock()
+
+    def maintain_menu(self):
+        menurect = pg.Rect(0, 0, self.display_width, self.RECT_SIZE)
+        pg.draw.rect(self.DISPLAY, (200, 200, 200), menurect)
+        self.DISPLAY.blit(self.vibe_man, (self.display_width//2 - self.RECT_SIZE//2, 0))
+        bombs_text = self.menu_font.render(str(self.flag_count) + '      3BV:' + str(self.threebv), True, (150, 0, 0))
+        self.DISPLAY.blit(bombs_text, (self.display_width//2 + self.RECT_SIZE, 0))
 
     def draw_tiles(self):
         field = self.field.two_dim_field
@@ -98,6 +110,17 @@ class Game:
         field = self.field.two_dim_field
         cross = pg.image.load('cross.png')
         cross = pg.transform.smoothscale(cross, (self.RECT_SIZE, self.RECT_SIZE))
+        time = self.menu_font.render(f"{self.time}s", True, (50, 50, 50))
+        self.DISPLAY.blit(time, (self.display_width-self.RECT_SIZE, 0))
+        if self.result:
+            self.vibe_man = pg.image.load('vibeman_victory.png')
+            ending_text = self.menu_font.render('YOU WIN!', True, (0, 200, 0))
+        if self.result is False:
+            ending_text = self.menu_font.render("YOU LOSE!", True, (200, 0, 0))
+            self.vibe_man = pg.image.load('vibeman_defeat.png')
+        self.DISPLAY.blit(ending_text, (0, 0))
+        self.vibe_man = pg.transform.smoothscale(self.vibe_man, (self.RECT_SIZE, self.RECT_SIZE))
+        self.DISPLAY.blit(self.vibe_man, (self.display_width//2 - self.RECT_SIZE//2, 0))
         for rows in range(self.field.y_limit):
             for columns in range(self.field.x_limit):
                 tile_value = field[columns][rows].get_value()

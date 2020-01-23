@@ -3,7 +3,7 @@ from tile import Tile
 
 
 class Field:
-    def __init__(self, rows, columns, two_dim_field = None, default_state='H'):
+    def __init__(self, rows, columns, two_dim_field=None, default_state='H'):
         self.x_limit = columns
         self.y_limit = rows
         if two_dim_field is None:
