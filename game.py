@@ -7,7 +7,7 @@ import timeit
 
 
 class Game:
-    def __init__(self, field_rows=8, field_columns=8, num_of_bombs=5):
+    def __init__(self, field_rows=8, field_columns=8, num_of_bombs=8):
         pg.init()
         icon = pg.image.load('ico.png')
         pg.display.set_icon(icon)
