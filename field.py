@@ -30,3 +30,11 @@ class Field:
                         self.two_dim_field[coords[0]][coords[1]] += 1
                 except Exception:
                     pass
+
+    def count_bombs(self):
+        bomb_count = 0
+        for y in range(self.y_limit):
+            for x in range(self.x_limit):
+                if self.two_dim_field[x][y].get_value() == 9:
+                    bomb_count += 1
+        return bomb_count

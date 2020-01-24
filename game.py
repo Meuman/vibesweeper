@@ -8,26 +8,21 @@ import timeit
 
 class Game:
     def __init__(self, mode=0, field_rows_or_field=8, field_columns=8, num_of_bombs=10):
-        pg.init()
-        icon = pg.image.load('ico.png')
-        pg.display.set_icon(icon)
-        pg.display.set_caption("Vibesweeper")
-        self.RECT_SIZE = 50
-        self.NUMBER_X_ADJUSTMENT_RATE = 3.05
-        self.NUMBER_Y_ADJUSTMENT_RATE = 1.2
+        self.init_pygame()
+        self.init_constants()
         if mode == 0:
             self.field = f.Field(field_rows_or_field, field_columns)
+            self.num_of_bombs = num_of_bombs
         if mode == 1:
             self.field = field_rows_or_field
+            self.num_of_bombs = self.field.count_bombs()
         self.result = None
-        self.flag_count = num_of_bombs
-        self.num_of_bombs = num_of_bombs
-        self.font = pg.font.SysFont(None, self.RECT_SIZE)
+        self.revealed_tiles = 0
+        self.flag_count = self.num_of_bombs
         self.init_color_dict()
         self.init_screen()
         self.init_menu()
         self.draw_tiles()
-        self.revealed_tiles = 0
         self.threebv = 'N\A'
         first_click = False
         while self.result is None:
@@ -66,20 +61,32 @@ class Game:
                 if event.type == pg.QUIT:
                     return
 
+    def init_pygame(self):
+        pg.init()
+        icon = pg.image.load('ico.png')
+        pg.display.set_icon(icon)
+        pg.display.set_caption("Vibesweeper")
+
+    def init_constants(self):
+        self.RECT_SIZE = 50
+        self.NUMBER_X_ADJUSTMENT_RATE = 3.05
+        self.NUMBER_Y_ADJUSTMENT_RATE = 1.2
+
     def init_screen(self):
         self.display_width = self.field.x_limit*self.RECT_SIZE
         self.display_height = (self.field.y_limit + 1)*self.RECT_SIZE
         self.DISPLAY = pg.display.set_mode((self.display_width, self.display_height))
 
     def init_menu(self):
-        menurect = pg.Rect(0, 0, self.display_width, self.RECT_SIZE)
+        self.font = pg.font.SysFont(None, self.RECT_SIZE)
         self.menu_font = pg.font.SysFont(False, self.RECT_SIZE//2)
-        pg.draw.rect(self.DISPLAY, (200, 200, 200), menurect)
         self.vibe_man = pg.image.load('him.png')
         self.vibe_man = pg.transform.smoothscale(self.vibe_man, (self.RECT_SIZE, self.RECT_SIZE))
-        self.DISPLAY.blit(self.vibe_man, (self.display_width//2 - self.RECT_SIZE//2, 0))
         self.bomb = pg.image.load('bomb.png')
         self.bomb = pg.transform.smoothscale(self.bomb, (self.RECT_SIZE, self.RECT_SIZE))
+        menurect = pg.Rect(0, 0, self.display_width, self.RECT_SIZE)
+        pg.draw.rect(self.DISPLAY, (200, 200, 200), menurect)
+        self.DISPLAY.blit(self.vibe_man, (self.display_width//2 - self.RECT_SIZE//2, 0))
 
     def maintain_menu(self):
         menurect = pg.Rect(0, 0, self.display_width, self.RECT_SIZE)

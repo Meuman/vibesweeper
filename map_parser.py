@@ -27,7 +27,7 @@ def text_to_map(input_file):
                     expected_columns = column
                     columns_counted = True
                 row += 1
-        field_to_return = Field(row, expected_columns, None, 'R')
+        field_to_return = Field(row, expected_columns, None, 'H')
         if row < 8 or expected_columns < 8:
             sys.exit(f'Incorrect data! The map must not be smaller than 8x8!')
         for coords in bomb_coords:
@@ -36,7 +36,7 @@ def text_to_map(input_file):
 
 
 def map_to_text(field, output_file):
-    with open(str(output_file), 'w') as ouf:
+    with open(str(output_file), 'w+') as ouf:
         for y in range(field.y_limit):
             for x in range(field.x_limit):
                 val = field.two_dim_field[x][y].get_value()
