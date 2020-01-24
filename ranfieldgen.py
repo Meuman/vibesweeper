@@ -3,8 +3,11 @@ from random import randint
 from coords import get_neighbor_coords
 
 
-def generate_random_field(rows, columns, bombs, nobomb_x=-1, nobomb_y=-1):
-    field = Field(rows, columns)
+def generate_random_field(rows, columns, bombs, nobomb_x=-5, nobomb_y=-5):
+    if rows*columns - bombs < 9:
+        raise Exception('Too many bombs!')
+        return
+    field = Field(rows, columns, None, 'H')
     while bombs != 0:
         not_here = False
         x = randint(0, columns-1)

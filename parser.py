@@ -45,8 +45,3 @@ def map_to_text(field, output_file):
                 else:
                     ouf.write('B')
             ouf.write('\n')
-
-
-field = text_to_map('test.txt')
-field.show()
-map_to_text(field, 'test_output.txt')

@@ -7,15 +7,18 @@ import timeit
 
 
 class Game:
-    def __init__(self, field_rows=8, field_columns=8, num_of_bombs=8):
+    def __init__(self, mode=0, field_rows_or_field=8, field_columns=8, num_of_bombs=10):
         pg.init()
         icon = pg.image.load('ico.png')
         pg.display.set_icon(icon)
         pg.display.set_caption("Vibesweeper")
-        self.RECT_SIZE = 100
+        self.RECT_SIZE = 50
         self.NUMBER_X_ADJUSTMENT_RATE = 3.05
         self.NUMBER_Y_ADJUSTMENT_RATE = 1.2
-        self.field = f.Field(field_rows, field_columns)
+        if mode == 0:
+            self.field = f.Field(field_rows_or_field, field_columns)
+        if mode == 1:
+            self.field = field_rows_or_field
         self.result = None
         self.flag_count = num_of_bombs
         self.num_of_bombs = num_of_bombs
@@ -35,7 +38,8 @@ class Game:
                 click_state = pg.mouse.get_pressed()
                 if click_state[0]:
                     if first_click is False:
-                        self.field = generate_random_field(field_rows, field_columns, num_of_bombs, mouse_pos[0], mouse_pos[1])
+                        if mode == 0:
+                            self.field = generate_random_field(field_rows_or_field, field_columns, num_of_bombs, mouse_pos[0], mouse_pos[1])
                         start = timeit.default_timer()
                         self.threebv = self.calculate_3bv()
                         first_click = True
@@ -197,6 +201,3 @@ class Game:
                     self.click_tile(x, y, calculation_field)
                     clicks += 1
         return clicks
-
-
-game = Game()

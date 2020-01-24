@@ -1,6 +1,4 @@
 def get_neighbor_coords(x, y):
-    if (x < 0 or y < 0):
-        return None
     coords = set()
     coords.add((x-1, y-1))  # top left
     coords.add((x, y-1))  # top
