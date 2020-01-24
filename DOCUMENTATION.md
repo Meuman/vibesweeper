@@ -161,3 +161,6 @@ This method takes a .txt file and returns a Field object based on how the .txt f
 ### map_to_text
 This method takes a field object and a path to the file.
 It opens the file from the path and writes a map into that file.
+
+### Special thanks
+Special thanks to subduedhues for the vibe man emoji art.
