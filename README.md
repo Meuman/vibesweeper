@@ -30,7 +30,7 @@ The attributes of a tile are:
   * F means that the tile is flagged.
 - X and Y
   *Two integers representing the coordinates on the board.
-### Methods and functions
+### Functions and methods
 The module also contains many self-explanatory functions such as is_hidden(), show(), flag(), etc. which I am not going to comment on.
 
 ## The field module
@@ -44,4 +44,20 @@ The attributes of a field are:
   - the most important part of the class: it is the two dimensional array of tiles.
 - Default_state
   * An attribute that controls the default state of the tile (hidden, flagged, etc.). Used mostly for debugging.
-### Functions and modules
+### Functions and methods
+#### place_bombs
+This function takes tuples as its arguments: The tuples represent the coordinates of the tile.
+We change the value of the given tile to a 9, and increase the value of the neighboring tiles by 1, unless the neighboring tiles are also a bomb.
+### count_bombs
+This function does not take any arguments. It iterates through the two_dim_field of the array and counts how many bombs there are.
+
+## The ranfieldgen module
+### Functions and methods
+#### generate_random_field
+This function takes 5 arguments: rows, columns, number of bombs, nobomb_x, and nobomb_y
+The first three arguments are self-explanatory.
+Nobomb_x and nobomb_y are the coordinates of the tile that was clicked as the first tile on the map.
+As we do not want to lose instantly after clicking the first tile, we make a dictionary of the neighboring tiles to the tile that was clicked the earliest.
+We take random coordinates: if we can place a bomb there (if the coordinates aren't in the dict or aren't the nobomb coordinates) we do so, and remove one from our bomb counter.
+We continue until the bomb counter is equal to 0.
+
