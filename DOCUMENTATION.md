@@ -31,7 +31,7 @@ To do so, we type:
 3: Let's say that we want to have new generated map with given dimensions and number of bombs in a my_new_map.txt file.
 10 rows, 10 columns, 10 bombs.
 To do so, we type:
-<code> vibesweeper.py 2 10 10 "my_new_map.txt"
+<code> vibesweeper.py 2 10 10 "my_new_map.txt" </code>
 
 
 
