@@ -56,8 +56,10 @@ This function does not take any arguments. It iterates through the two_dim_field
 #### generate_random_field
 This function takes 5 arguments: rows, columns, number of bombs, nobomb_x, and nobomb_y
 The first three arguments are self-explanatory.
+
 Nobomb_x and nobomb_y are the coordinates of the tile that was clicked as the first tile on the map.
 As we do not want to lose instantly after clicking the first tile, we make a dictionary of the neighboring tiles to the tile that was clicked the earliest.
+
 We take random coordinates: if we can place a bomb there (if the coordinates aren't in the dict or aren't the nobomb coordinates) we do so, and remove one from our bomb counter.
 We continue until the bomb counter is equal to 0.
 
