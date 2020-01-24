@@ -63,3 +63,24 @@ As we do not want to lose instantly after clicking the first tile, we make a dic
 We take random coordinates: if we can place a bomb there (if the coordinates aren't in the dict or aren't the nobomb coordinates) we do so, and remove one from our bomb counter.
 We continue until the bomb counter is equal to 0.
 
+## The coords module
+### Functions and methods
+#### get_neighbor_coords
+This function takes coordinates as its arguments. It returns a set of all the neigboring tile coordinates.
+
+## The game module
+### Before we begin
+This module is pretty much the core of the entire game (200+ lines of code!). The entire gameplay, graphics and all necessary calculations are done there. I am aware that it would be better to split this module into three different ones, but due to time constraints I have to leave it as it is. 
+### Attributes
+* Mode
+ * Mode 0 means that we do not have a preset map and wish to generate one.
+ * Mode 1 means that we have a preset map and wish to play on it.
+The rest of the arguments are self-explanatory.
+### Functions and methods
+#### init_pygame
+Self explanatory, initializes the pygame library and and minor things such as the icon and the program name in the taskbar.
+
+#### init_constants
+In this function we declare the constant values used in the program. Rect_size stands for the dimensions of the rectangles which represent a tile, and the other two are magic numbers, which are used to make sure the number on a revealed tile is centered.
+
+#### 
