@@ -1,4 +1,5 @@
 # *VIBESWEEPER*
+## *DOCUMENTATION*
 ##### Mateusz Przeździecki, 2020
 ## A little about the game
 I'm fairly certain all of us have already played minesweeper at least once in their lifetime, so I'm going to go over the rules very briefly.
